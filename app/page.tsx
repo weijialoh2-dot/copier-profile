@@ -1,64 +1,82 @@
+"use client";
 import Image from "next/image";
+import { motion } from "framer-motion";
+import { useState } from "react";
+import Navbar from "@/components/Navbar";
+
 
 export default function Home() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
+    <div className="min-h-screen flex flex-col bg-white text-gray-800">
+            {/* ✅ Navbar Component */}
+      <Navbar />
+
+
+      {/* ✅ Mobile Dropdown Menu */}
+      {menuOpen && (
+        <motion.div
+          className="md:hidden bg-[#fff5eb] shadow-md border-t border-orange-100 px-6 py-4 space-y-3 text-gray-700 font-medium"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          {["Home", "About", "Products", "Contact"].map((item, idx) => (
             <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              key={idx}
+              href={`#${item.toLowerCase()}`}
+              className="block hover:text-[#f97316] transition-colors"
+              onClick={() => setMenuOpen(false)} // 自动关闭菜单
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+              {item}
+            </a>
+          ))}
+        </motion.div>
+      )}
+
+      {/* Hero Section */}
+      <main className="flex flex-col md:flex-row items-center justify-between px-6 md:px-16 py-16 md:py-24 bg-gradient-to-r from-[#f97316] to-[#fb923c] text-white relative overflow-hidden">
+        {/* Left content */}
+        <motion.div
+          className="max-w-xl space-y-5 z-10"
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight drop-shadow-md">
+            Your Trusted <br />
+            Copier & Printer Partner
+          </h2>
+          <p className="text-lg sm:text-xl md:text-2xl font-light text-orange-100">
+            Providing reliable printing solutions and services for every
+            business need.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <motion.button
+            className="bg-white text-[#f97316] px-6 py-3 rounded-lg mt-4 font-semibold shadow-md hover:bg-orange-50 hover:shadow-lg transition-all"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+            Discover More
+          </motion.button>
+        </motion.div>
+
+        {/* Copier Image */}
+        <motion.div
+          className="flex items-center justify-center md:justify-end w-full md:w-1/2 mt-10 md:mt-0 relative md:-ml-10"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
+          <Image
+            src="/imc6000.png"
+            alt="Copier machine"
+            width={580}
+            height={580}
+            className="object-contain drop-shadow-[0_20px_45px_rgba(0,0,0,0.35)] hover:scale-105 transition-transform duration-500"
+            priority
+          />
+        </motion.div>
       </main>
     </div>
   );
