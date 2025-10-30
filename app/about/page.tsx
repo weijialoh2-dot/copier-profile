@@ -88,7 +88,7 @@ export default function AboutPage() {
               alt="Team member"
               className="rounded-full w-24 h-24 mx-auto mb-4 object-cover"
             />
-            <h3 className="text-lg font-semibold text-gray-800">Miss Loh</h3>
+            <h3 className="text-lg font-semibold text-gray-800">jiajia</h3>
             <p className="text-sm text-gray-500">Intern</p>
           </div>
 
@@ -99,7 +99,7 @@ export default function AboutPage() {
               alt="Team member"
               className="rounded-full w-24 h-24 mx-auto mb-4 object-cover"
             />
-            <h3 className="text-lg font-semibold text-gray-800">John Tan</h3>
+            <h3 className="text-lg font-semibold text-gray-800">Kenny Loh</h3>
             <p className="text-sm text-gray-500">Sales Executive</p>
           </div>
         </div>

@@ -11,7 +11,6 @@ export default function ContactPage() {
     email: "",
     message: "",
   });
-  const [copiedText, setCopiedText] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -19,48 +18,52 @@ export default function ContactPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert("Thank you for contacting us! We’ll get back to you soon.");
-    setFormData({ name: "", email: "", message: "" });
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+        }),
+      });
+
+      const data = await res.json();
+      console.log(data);
+
+      if (data.success) {
+        toast.success("Message sent successfully!");
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        toast.error("Failed to send message.");
+      }
+    } catch (err) {
+      toast.error("Something went wrong.");
+      console.error(err);
+    }
   };
 
   const handleCopy = async (text: string) => {
-  try {
-    await navigator.clipboard.writeText(text);
-    toast.success("Copied to clipboard!", {
-      description: text,
-    });
-  } catch (err) {
-    console.error("Copy failed:", err);
-    toast.error("Failed to copy!");
-  }
-};
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.success("Copied to clipboard!", {
+        description: text,
+      });
+    } catch (err) {
+      console.error("Copy failed:", err);
+      toast.error("Failed to copy!");
+    }
+  };
 
   return (
     <>
       <Navbar />
 
       <main className="min-h-screen bg-gradient-to-br from-orange-500 via-orange-400 to-orange-300 text-white px-6 md:px-20 py-20 flex flex-col relative overflow-hidden">
-        {/* ✅ 高级 Toast 提示 */}
-        <AnimatePresence>
-          {copiedText && (
-            <motion.div
-              key="toast"
-              initial={{ opacity: 0, y: -20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 0.95 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="fixed top-6 right-6 z-50 flex items-center gap-3 
-                         bg-white/20 backdrop-blur-md border border-white/40 
-                         rounded-xl px-5 py-3 shadow-lg text-white font-medium"
-            >
-              <div className="text-lg">✅</div>
-              <p className="text-sm tracking-wide">Copied to clipboard!</p>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
         {/* 标题区 */}
         <motion.div
           className="text-center mb-20 space-y-4"
