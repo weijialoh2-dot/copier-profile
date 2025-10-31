@@ -8,10 +8,17 @@ import Navbar from "@/components/Navbar";
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const menuItems = ["Home", "About", "Products", "Services", "Testimonials", "Contact"];
+  const menuItems = [
+    "Home",
+    "About",
+    "Products",
+    "Services",
+    "Testimonials",
+    "Contact",
+  ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-gray-800 overflow-hidden scroll-smooth">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-white via-[#fff8f3] to-[#fff1e6] text-gray-800">
       {/* ✅ Navbar */}
       <Navbar />
 
@@ -62,7 +69,8 @@ export default function Home() {
             Copier & Printer Partner
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl font-light text-orange-100">
-            Providing reliable printing solutions and services for every business need.
+            Providing reliable printing solutions and services for every
+            business need.
           </p>
           <motion.button
             className="bg-white text-[#f97316] px-8 py-3 rounded-xl mt-4 font-semibold shadow-lg hover:bg-orange-50 hover:shadow-xl transition-all duration-300"
@@ -95,11 +103,11 @@ export default function Home() {
       <section id="about" className="py-20 px-6 md:px-16 bg-white text-center">
         <h2 className="text-3xl font-bold text-[#f97316] mb-6">About Us</h2>
         <p className="max-w-3xl mx-auto text-gray-600 text-lg leading-relaxed">
-          At <strong>Copier Profile Sdn. Bhd.</strong>, we specialize in providing
-          high-quality multifunction copiers and printing solutions. With over a decade
-          of experience, our team is committed to delivering excellence in every product
-          and service we offer — helping businesses operate more efficiently and
-          sustainably.
+          At <strong>Copier Profile Sdn. Bhd.</strong>, we specialize in
+          providing high-quality multifunction copiers and printing solutions.
+          With over a decade of experience, our team is committed to delivering
+          excellence in every product and service we offer — helping businesses
+          operate more efficiently and sustainably.
         </p>
         <div className="mt-10 flex flex-col md:flex-row items-center justify-center gap-10">
           <Image
@@ -110,70 +118,77 @@ export default function Home() {
             className="rounded-2xl shadow-lg object-cover"
           />
           <div className="max-w-md text-left space-y-4">
-            <h3 className="text-2xl font-semibold text-[#f97316]">Our Mission</h3>
+            <h3 className="text-2xl font-semibold text-[#f97316]">
+              Our Mission
+            </h3>
             <p className="text-gray-600">
-              To provide reliable, affordable, and eco-friendly copier solutions that
-              empower every business to print smarter and work better.
+              To provide reliable, affordable, and eco-friendly copier solutions
+              that empower every business to print smarter and work better.
             </p>
           </div>
         </div>
       </section>
 
       {/* ✅ Products Section */}
-<section
-  id="products"
-  className="py-20 px-6 md:px-16 bg-[#fff5eb] text-center"
->
-  <h2 className="text-3xl font-bold text-[#f97316] mb-10">
-    Our Products
-  </h2>
-
-  <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-    {[
-      {
-        name: "IM C Series",
-        img: "/imc.png",
-        desc: "Advanced smart multifunction color copiers designed for high-volume, professional office use. Exceptional clarity, wireless connectivity, and cloud integration.",
-      },
-      {
-        name: "MP Series",
-        img: "/mp.png",
-        desc: "Reliable multifunction printers built for productivity and consistency. Ideal for medium to large offices needing fast, high-quality output.",
-      },
-      {
-        name: "Toner & Supplies",
-        img: "/toner.png",
-        desc: "Original and compatible toners, drums, and consumables to ensure peak performance and longevity of your copier machines.",
-      },
-    ].map((p, i) => (
-      <motion.div
-        key={i}
-        className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all p-6 flex flex-col items-center"
-        whileHover={{ scale: 1.03 }}
+      <section
+        id="products"
+        className="py-20 px-6 md:px-16 bg-[#fff5eb] text-center"
       >
-        {/* ✅ 统一图片框架 */}
-        <div className="w-full h-64 bg-[#fff5eb] rounded-xl flex items-center justify-center overflow-hidden mb-4 border border-orange-100">
-          <Image
-            src={p.img}
-            alt={p.name}
-            width={250}
-            height={250}
-            className="object-contain max-h-full"
-          />
+        <h2 className="text-3xl font-bold text-[#f97316] mb-10">
+          Our Products
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          {[
+            {
+              name: "IM C Series",
+              img: "/imc.png",
+              desc: "Advanced smart multifunction color copiers designed for high-volume, professional office use. Exceptional clarity, wireless connectivity, and cloud integration.",
+            },
+            {
+              name: "MP Series",
+              img: "/mp.png",
+              desc: "Reliable multifunction printers built for productivity and consistency. Ideal for medium to large offices needing fast, high-quality output.",
+            },
+            {
+              name: "Toner & Supplies",
+              img: "/toners.png",
+              desc: "Original and compatible toners, drums, and consumables to ensure peak performance and longevity of your copier machines.",
+            },
+          ].map((p, i) => (
+            <motion.div
+              key={i}
+              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all p-6 flex flex-col items-center"
+              whileHover={{ scale: 1.03 }}
+            >
+              {/* ✅ 统一图片框架 */}
+              <div className="w-full h-64 bg-[#fff5eb] rounded-xl flex items-center justify-center overflow-hidden mb-4 border border-orange-100">
+                <Image
+                  src={p.img}
+                  alt={p.name}
+                  width={250}
+                  height={250}
+                  className="object-contain max-h-full"
+                />
+              </div>
+
+              <h3 className="text-xl font-semibold text-[#f97316]">{p.name}</h3>
+              <p className="text-gray-600 mt-2 text-sm md:text-base">
+                {p.desc}
+              </p>
+            </motion.div>
+          ))}
         </div>
-
-        <h3 className="text-xl font-semibold text-[#f97316]">{p.name}</h3>
-        <p className="text-gray-600 mt-2 text-sm md:text-base">{p.desc}</p>
-      </motion.div>
-    ))}
-  </div>
-</section>
-
-
+      </section>
 
       {/* ✅ Services Section */}
-      <section id="services" className="py-20 px-6 md:px-16 bg-white text-center">
-        <h2 className="text-3xl font-bold text-[#f97316] mb-10">Our Services</h2>
+      <section
+        id="services"
+        className="py-20 px-6 md:px-16 bg-white text-center"
+      >
+        <h2 className="text-3xl font-bold text-[#f97316] mb-10">
+          Our Services
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {[
             {
@@ -194,7 +209,9 @@ export default function Home() {
               className="p-6 bg-[#fff5eb] rounded-2xl shadow-md hover:shadow-xl transition-all"
               whileHover={{ scale: 1.05 }}
             >
-              <h3 className="text-xl font-semibold text-[#f97316] mb-3">{s.title}</h3>
+              <h3 className="text-xl font-semibold text-[#f97316] mb-3">
+                {s.title}
+              </h3>
               <p className="text-gray-600">{s.desc}</p>
             </motion.div>
           ))}
@@ -202,8 +219,13 @@ export default function Home() {
       </section>
 
       {/* ✅ Testimonials Section */}
-      <section id="testimonials" className="py-20 px-6 md:px-16 bg-[#fff5eb] text-center">
-        <h2 className="text-3xl font-bold text-[#f97316] mb-10">What Our Clients Say</h2>
+      <section
+        id="testimonials"
+        className="py-20 px-6 md:px-16 bg-[#fff5eb] text-center"
+      >
+        <h2 className="text-3xl font-bold text-[#f97316] mb-10">
+          What Our Clients Say
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
             {
@@ -232,7 +254,10 @@ export default function Home() {
       </section>
 
       {/* ✅ Contact Section */}
-      <section id="contact" className="py-20 px-6 md:px-16 bg-white text-center">
+      <section
+        id="contact"
+        className="py-20 px-6 md:px-16 bg-white text-center"
+      >
         <h2 className="text-3xl font-bold text-[#f97316] mb-8">Get in Touch</h2>
         <p className="text-gray-600 mb-8">
           Have questions or need a quote? We’d love to hear from you.
@@ -250,7 +275,8 @@ export default function Home() {
       {/* ✅ Footer */}
       <footer className="bg-[#f97316] text-white text-center py-6">
         <p className="text-sm">
-          © {new Date().getFullYear()} Copier Profile Sdn. Bhd. All rights reserved.
+          © {new Date().getFullYear()} Copier Profile Sdn. Bhd. All rights
+          reserved.
         </p>
       </footer>
     </div>

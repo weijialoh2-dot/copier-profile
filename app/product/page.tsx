@@ -5,7 +5,6 @@ import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import Link from "next/link";
 
-
 export default function ProductPage() {
   const categories = [
     {
@@ -15,17 +14,17 @@ export default function ProductPage() {
       products: [
         {
           name: "IM C3000",
-          image: "imc.png",
+          image: "/imc.png",
           desc: "Compact yet powerful, ideal for small to mid-sized offices requiring quality colour prints.",
         },
         {
           name: "IM C4500",
-          image: "imc.png",
+          image: "/imc.png",
           desc: "High-speed colour printing for demanding offices with exceptional image quality and durability.",
         },
         {
           name: "IM C6000",
-          image: "imc.png",
+          image: "/imc.png",
           desc: "Enterprise-level performance with outstanding efficiency and vibrant colour reproduction.",
         },
       ],
@@ -37,18 +36,35 @@ export default function ProductPage() {
       products: [
         {
           name: "MP 2555",
-          image: "mp.png",
+          image: "/mp.png",
           desc: "Fast and durable, perfect for small teams requiring consistent document output.",
         },
         {
           name: "MP 3055",
-          image: "mp.png",
+          image: "/mp.png",
           desc: "Balanced speed and reliability — ideal for medium-sized workgroups.",
         },
         {
           name: "MP 4055",
-          image: "mp.png",
+          image: "/mp.png",
           desc: "Designed for heavy workloads with robust features and exceptional clarity.",
+        },
+      ],
+    },
+    {
+      title: "Toner & Supplies",
+      description:
+        "Genuine Ricoh consumables and toner supplies to maintain optimal performance and print quality for your devices.",
+      products: [
+        {
+          name: "Toner CMYK",
+          image: "/toners.png", // 
+          desc: "Original toner cartridges (Cyan, Magenta, Yellow, Black) engineered for superior color accuracy and long-lasting prints.",
+        },
+        {
+          name: "Consumable Genuine Part Ricoh",
+          image: "/parts.png", // 🔸 你可以放新的配件图片
+          desc: "High-quality genuine Ricoh parts and maintenance kits to ensure your copier performs reliably and efficiently.",
         },
       ],
     },
@@ -70,8 +86,9 @@ export default function ProductPage() {
             Our Products
           </h1>
           <p className="text-lg md:text-xl text-orange-50 max-w-3xl mx-auto">
-            Copier Profile provides sales and rental services for multifunction printers and consumable parts.
-            Explore our range of reliable colour and black & white models tailored to your business needs.
+            Copier Profile provides sales and rental services for multifunction printers
+            and consumable parts. Explore our range of reliable colour and black & white
+            models tailored to your business needs.
           </p>
         </motion.div>
 
@@ -87,9 +104,7 @@ export default function ProductPage() {
             >
               {/* Category Title */}
               <div className="text-center">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                  {cat.title}
-                </h2>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">{cat.title}</h2>
                 <p className="text-orange-50 max-w-2xl mx-auto">
                   {cat.description}
                 </p>
