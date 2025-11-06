@@ -16,7 +16,7 @@ export async function POST(req) {
         }
 
         const msg = {
-            to: process.env.RECEIVER_EMAIL,
+            to: process.env.EMAIL_USER,
             from: `"Website Contact" <${process.env.EMAIL_USER}>`,// 你验证过的发件邮箱
             subject: `Website Contact: ${name}`,
             text: `Sender: ${name} <${email}>\n\nMessage:\n${message}`,
