@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import { toast } from "sonner";
+import PurchaseOptions from "@/components/PurchaseOptions";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -224,6 +225,14 @@ export default function ContactPage() {
             </div>
           </motion.div>
         </div>
+        
+        {/* 🛒 Purchase Platforms Section */}
+        <section className="mt-20 mb-10">
+          <PurchaseOptions
+            shopee="https://shopee.com.my/your-company"
+            lazada="https://www.lazada.com.my/your-company"
+          />
+        </section>
       </main>
     </>
   );

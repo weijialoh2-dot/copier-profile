@@ -4,8 +4,15 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import ProductModal from "@/components/ProductModal";
 
 export default function ProductPage() {
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+
+  const handleViewDetails = (product: any) => setSelectedProduct(product);
+  const handleCloseModal = () => setSelectedProduct(null);
+
   const categories = [
     {
       title: "Multifunction Printer (Colour)",
@@ -58,12 +65,12 @@ export default function ProductPage() {
       products: [
         {
           name: "Toner CMYK",
-          image: "/toners.png", // 
+          image: "/toners.png",
           desc: "Original toner cartridges (Cyan, Magenta, Yellow, Black) engineered for superior color accuracy and long-lasting prints.",
         },
         {
           name: "Consumable Genuine Part Ricoh",
-          image: "/parts.png", // 🔸 你可以放新的配件图片
+          image: "/parts.png",
           desc: "High-quality genuine Ricoh parts and maintenance kits to ensure your copier performs reliably and efficiently.",
         },
       ],
@@ -102,15 +109,11 @@ export default function ProductPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: index * 0.3 }}
             >
-              {/* Category Title */}
               <div className="text-center">
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">{cat.title}</h2>
-                <p className="text-orange-50 max-w-2xl mx-auto">
-                  {cat.description}
-                </p>
+                <p className="text-orange-50 max-w-2xl mx-auto">{cat.description}</p>
               </div>
 
-              {/* Product Cards */}
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
                 {cat.products.map((p, i) => (
                   <motion.div
@@ -118,7 +121,6 @@ export default function ProductPage() {
                     className="bg-white rounded-2xl shadow-2xl overflow-hidden text-gray-800 flex flex-col hover:shadow-orange-300 transition-shadow"
                     whileHover={{ scale: 1.03 }}
                   >
-                    {/* ✅ Product Image (fixed sizing) */}
                     <div className="relative h-60 w-full bg-white flex items-center justify-center">
                       <Image
                         src={p.image}
@@ -128,7 +130,6 @@ export default function ProductPage() {
                       />
                     </div>
 
-                    {/* Product Info */}
                     <div className="p-6 flex flex-col flex-1 justify-between">
                       <div>
                         <h3 className="text-xl font-bold text-orange-600 mb-2">
@@ -137,12 +138,12 @@ export default function ProductPage() {
                         <p className="text-gray-700 mb-4">{p.desc}</p>
                       </div>
 
-                      {/* Buttons */}
                       <div className="flex gap-3 mt-auto">
                         <motion.button
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           className="flex-1 bg-orange-500 text-white py-2 rounded-lg font-semibold hover:bg-orange-600 hover:shadow-lg transition-all"
+                          onClick={() => handleViewDetails(p)}
                         >
                           View Details
                         </motion.button>
@@ -165,6 +166,15 @@ export default function ProductPage() {
           ))}
         </div>
       </main>
+
+      {/* 弹窗 */}
+      {selectedProduct && (
+        <ProductModal
+          product={selectedProduct}
+          isOpen={!!selectedProduct}
+          onClose={handleCloseModal}
+        />
+      )}
     </>
   );
 }
