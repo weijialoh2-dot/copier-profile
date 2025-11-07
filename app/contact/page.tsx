@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import { toast } from "sonner";
@@ -13,32 +13,102 @@ export default function ContactPage() {
     message: "",
   });
 
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  // ✅ 单字段验证函数
+  const validateField = (name: string, value: string) => {
+    let error = "";
+
+    if (name === "name") {
+      if (!/^[a-zA-Z\s]*$/.test(value))
+        error = "Name can only contain letters and spaces.";
+      else if (value.trim().length === 0) error = "Name cannot be empty.";
+    }
+
+    if (name === "email") {
+      if (value.trim().length === 0) error = "Email cannot be empty.";
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+        error = "Please enter a valid email address.";
+    }
+
+    if (name === "message") {
+      if (value.trim().length === 0) error = "Message cannot be empty.";
+      else if (value.length > 500)
+        error = "Message cannot exceed 500 characters.";
+    }
+
+    setErrors((prev) => ({ ...prev, [name]: error }));
+  };
+
+  // ✅ 实时输入 + 实时验证
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    // 限制字数
+    if (name === "message" && value.length > 500) return;
+
+    setFormData({ ...formData, [name]: value });
+
+    // 输入时立即验证
+    validateField(name, value);
   };
 
+  // ✅ 最后提交验证（防止用户跳过）
+  const validateForm = () => {
+    const newErrors = {
+      name: "",
+      email: "",
+      message: "",
+    };
+    let valid = true;
+
+    Object.entries(formData).forEach(([key, value]) => {
+      validateField(key, value);
+      if (
+        key === "name" &&
+        (!/^[a-zA-Z\s]*$/.test(value) || value.trim().length === 0)
+      )
+        valid = false;
+      if (
+        key === "email" &&
+        (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || value.trim().length === 0)
+      )
+        valid = false;
+      if (
+        key === "message" &&
+        (value.trim().length === 0 || value.length > 500)
+      )
+        valid = false;
+    });
+
+    return valid;
+  };
+
+  // ✅ 提交
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!validateForm()) return;
 
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-        }),
+        body: JSON.stringify(formData),
       });
 
       const data = await res.json();
-      console.log(data);
 
       if (data.success) {
         toast.success("Message sent successfully!");
         setFormData({ name: "", email: "", message: "" });
+        setErrors({ name: "", email: "", message: "" });
       } else {
         toast.error("Failed to send message.");
       }
@@ -51,11 +121,8 @@ export default function ContactPage() {
   const handleCopy = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
-      toast.success("Copied to clipboard!", {
-        description: text,
-      });
+      toast.success("Copied to clipboard!", { description: text });
     } catch (err) {
-      console.error("Copy failed:", err);
       toast.error("Failed to copy!");
     }
   };
@@ -65,7 +132,7 @@ export default function ContactPage() {
       <Navbar />
 
       <main className="min-h-screen bg-gradient-to-br from-orange-500 via-orange-400 to-orange-300 text-white px-6 md:px-20 py-20 flex flex-col relative overflow-hidden">
-        {/* 标题区 */}
+        {/* 标题 */}
         <motion.div
           className="text-center mb-20 space-y-4"
           initial={{ opacity: 0, y: -30 }}
@@ -83,7 +150,7 @@ export default function ContactPage() {
 
         {/* 内容区 */}
         <div className="flex flex-col lg:flex-row gap-12 max-w-7xl mx-auto w-full items-stretch">
-          {/* 左边：联系表单 */}
+          {/* 左边：表单 */}
           <motion.form
             onSubmit={handleSubmit}
             className="flex-1 bg-white text-gray-800 rounded-2xl shadow-2xl p-10 space-y-6 flex flex-col justify-between"
@@ -96,6 +163,7 @@ export default function ContactPage() {
                 ✉️ Send Us a Message
               </h2>
 
+              {/* Name */}
               <div>
                 <label className="block text-sm font-semibold mb-2 text-gray-700">
                   Name
@@ -106,10 +174,16 @@ export default function ContactPage() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-400 focus:outline-none"
+                  className={`w-full px-4 py-3 rounded-lg border ${
+                    errors.name ? "border-red-500" : "border-gray-300"
+                  } focus:ring-2 focus:ring-orange-400 focus:outline-none`}
                 />
+                {errors.name && (
+                  <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+                )}
               </div>
 
+              {/* Email */}
               <div className="mt-4">
                 <label className="block text-sm font-semibold mb-2 text-gray-700">
                   Email
@@ -120,10 +194,16 @@ export default function ContactPage() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-400 focus:outline-none"
+                  className={`w-full px-4 py-3 rounded-lg border ${
+                    errors.email ? "border-red-500" : "border-gray-300"
+                  } focus:ring-2 focus:ring-orange-400 focus:outline-none`}
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                )}
               </div>
 
+              {/* Message */}
               <div className="mt-4">
                 <label className="block text-sm font-semibold mb-2 text-gray-700">
                   Message
@@ -134,8 +214,24 @@ export default function ContactPage() {
                   onChange={handleChange}
                   rows={5}
                   required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-400 focus:outline-none"
+                  className={`w-full px-4 py-3 rounded-lg border ${
+                    errors.message ? "border-red-500" : "border-gray-300"
+                  } focus:ring-2 focus:ring-orange-400 focus:outline-none`}
                 ></textarea>
+                <div className="flex justify-between items-center mt-1">
+                  {errors.message && (
+                    <p className="text-red-500 text-sm">{errors.message}</p>
+                  )}
+                  <p
+                    className={`text-sm ${
+                      formData.message.length >= 500
+                        ? "text-red-500"
+                        : "text-gray-400"
+                    }`}
+                  >
+                    {formData.message.length}/500
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -189,7 +285,7 @@ export default function ContactPage() {
                 </a>
               </div>
 
-              {/* 📞 电话 */}
+              {/* 电话 */}
               <div className="mt-6">
                 <h3 className="text-xl font-semibold mb-2">📞 Phone</h3>
                 <button
@@ -200,7 +296,7 @@ export default function ContactPage() {
                 </button>
               </div>
 
-              {/* 📧 邮箱 */}
+              {/* 邮箱 */}
               <div className="mt-6">
                 <h3 className="text-xl font-semibold mb-2">📧 Email</h3>
                 <button
@@ -212,7 +308,7 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* 🕒 工作时间 */}
+            {/* 工作时间 */}
             <div className="pt-6 border-t border-white/20">
               <h3 className="text-xl font-semibold mb-2">🕒 Working Hours</h3>
               <p className="text-orange-50 leading-relaxed">
@@ -225,8 +321,8 @@ export default function ContactPage() {
             </div>
           </motion.div>
         </div>
-        
-        {/* 🛒 Purchase Platforms Section */}
+
+        {/* 🛒 Purchase Platforms */}
         <section className="mt-20 mb-10">
           <PurchaseOptions
             shopee="https://shopee.com.my/your-company"

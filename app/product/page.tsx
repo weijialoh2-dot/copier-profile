@@ -4,17 +4,32 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProductModal from "@/components/ProductModal";
+import { useRouter } from "next/navigation";
 
 export default function ProductPage() {
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
-
+  const [activeSection, setActiveSection] = useState("colour");
+  const router = useRouter();
   const handleViewDetails = (product: any) => setSelectedProduct(product);
   const handleCloseModal = () => setSelectedProduct(null);
 
+  useEffect(() => {
+    // ✅ Check URL hash after navigation
+    const hash = window.location.hash;
+    if (hash) {
+      const id = hash.replace("#", "");
+      setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+      }, 300);
+    }
+  }, []);
+
+  // ✅ 分类定义（含id）
   const categories = [
     {
+      id: "colour",
       title: "Multifunction Printer (Colour)",
       description:
         "Professional colour multifunction printers delivering vibrant output and reliable performance for business environments.",
@@ -37,6 +52,7 @@ export default function ProductPage() {
       ],
     },
     {
+      id: "mono",
       title: "Multifunction Printer (Black & White)",
       description:
         "Reliable monochrome printers built for productivity, efficiency, and cost-saving performance.",
@@ -59,6 +75,7 @@ export default function ProductPage() {
       ],
     },
     {
+      id: "toner",
       title: "Toner & Supplies",
       description:
         "Genuine Ricoh consumables and toner supplies to maintain optimal performance and print quality for your devices.",
@@ -77,10 +94,39 @@ export default function ProductPage() {
     },
   ];
 
+  // ✅ 滚动时检测当前 section
+  useEffect(() => {
+    const handleScroll = () => {
+      const sectionIds = categories.map((c) => c.id);
+      let current = activeSection;
+
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 200 && rect.bottom >= 200) {
+            current = id;
+            break;
+          }
+        }
+      }
+      setActiveSection(current);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [categories, activeSection]);
+
+  // ✅ 平滑滚动
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <>
       <Navbar />
 
+      {/* 主内容 */}
       <main className="min-h-screen bg-gradient-to-br from-orange-500 via-orange-400 to-orange-300 text-white px-6 md:px-20 py-20">
         {/* Header */}
         <motion.div
@@ -99,12 +145,13 @@ export default function ProductPage() {
           </p>
         </motion.div>
 
-        {/* Product Categories */}
+        {/* 各分类 Section */}
         <div className="space-y-20 max-w-7xl mx-auto">
           {categories.map((cat, index) => (
             <motion.section
+              id={cat.id}
               key={index}
-              className="space-y-10"
+              className="space-y-10 scroll-mt-24"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: index * 0.3 }}

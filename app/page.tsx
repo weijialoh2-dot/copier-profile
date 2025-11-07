@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
+import Link from "next/link";
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -131,55 +132,56 @@ export default function Home() {
 
       {/* ✅ Products Section */}
       <section
-        id="products"
-        className="py-20 px-6 md:px-16 bg-[#fff5eb] text-center"
-      >
-        <h2 className="text-3xl font-bold text-[#f97316] mb-10">
-          Our Products
-        </h2>
+  id="products"
+  className="py-20 px-6 md:px-16 bg-[#fff5eb] text-center"
+>
+  <h2 className="text-3xl font-bold text-[#f97316] mb-10">
+    Our Products
+  </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {[
-            {
-              name: "IM C Series",
-              img: "/imc.png",
-              desc: "Advanced smart multifunction color copiers designed for high-volume, professional office use. Exceptional clarity, wireless connectivity, and cloud integration.",
-            },
-            {
-              name: "MP Series",
-              img: "/mp.png",
-              desc: "Reliable multifunction printers built for productivity and consistency. Ideal for medium to large offices needing fast, high-quality output.",
-            },
-            {
-              name: "Toner & Supplies",
-              img: "/toners.png",
-              desc: "Original and compatible toners, drums, and consumables to ensure peak performance and longevity of your copier machines.",
-            },
-          ].map((p, i) => (
-            <motion.div
-              key={i}
-              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all p-6 flex flex-col items-center"
-              whileHover={{ scale: 1.03 }}
-            >
-              {/* ✅ 统一图片框架 */}
-              <div className="w-full h-64 bg-[#fff5eb] rounded-xl flex items-center justify-center overflow-hidden mb-4 border border-orange-100">
-                <Image
-                  src={p.img}
-                  alt={p.name}
-                  width={250}
-                  height={250}
-                  className="object-contain max-h-full"
-                />
-              </div>
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+    {[
+      {
+        name: "IM C Series",
+        img: "/imc.png",
+        desc: "Advanced smart multifunction color copiers designed for high-volume, professional office use. Exceptional clarity, wireless connectivity, and cloud integration.",
+        link: "/product#colour", // ✅ scrolls to Colour section
+      },
+      {
+        name: "MP Series",
+        img: "/mp.png",
+        desc: "Reliable multifunction printers built for productivity and consistency. Ideal for medium to large offices needing fast, high-quality output.",
+        link: "/product#mono", // ✅ scrolls to Monochrome section
+      },
+      {
+        name: "Toner & Supplies",
+        img: "/toners.png",
+        desc: "Original and compatible toners, drums, and consumables to ensure peak performance and longevity of your copier machines.",
+        link: "/product#toner", // ✅ scrolls to Toner section
+      },
+    ].map((p, i) => (
+      <Link key={i} href={p.link} className="group">
+        <motion.div
+          className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all p-6 flex flex-col items-center cursor-pointer"
+          whileHover={{ scale: 1.03 }}
+        >
+          <div className="w-full h-64 bg-[#fff5eb] rounded-xl flex items-center justify-center overflow-hidden mb-4 border border-orange-100">
+            <Image
+              src={p.img}
+              alt={p.name}
+              width={250}
+              height={250}
+              className="object-contain max-h-full"
+            />
+          </div>
 
-              <h3 className="text-xl font-semibold text-[#f97316]">{p.name}</h3>
-              <p className="text-gray-600 mt-2 text-sm md:text-base">
-                {p.desc}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+          <h3 className="text-xl font-semibold text-[#f97316]">{p.name}</h3>
+          <p className="text-gray-600 mt-2 text-sm md:text-base">{p.desc}</p>
+        </motion.div>
+      </Link>
+    ))}
+  </div>
+</section>
 
       {/* ✅ Services Section */}
       <section
