@@ -13,6 +13,7 @@ export default function Navbar() {
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
     { name: "Products", href: "/product" },
+     { name: "Service", href: "/service" },
     { name: "Contact", href: "/contact" }, // ✅ 指向 /contact
   ];
 

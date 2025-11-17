@@ -208,6 +208,7 @@ export default function ProductPage() {
                     </div>
                   </motion.div>
                 ))}
+                
               </div>
             </motion.section>
           ))}
